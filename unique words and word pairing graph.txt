@@ -1,0 +1,91 @@
+#libraries note we have not used a lot of these in class so you'll have to install them
+library(ggraph)
+library(igraph)
+library(tidytext)
+library(ggplot2)
+library(dplyr)
+
+#lets go get those tweets
+deerestats <- search_tweets("Deere", n = 10000, include_rts = FALSE)
+
+#lets view them
+View(deerestats)
+#hyperlinks aren't works so lets get rid of them
+deerestats$stripped_text <- gsub("http.*","",  deerestats$text)
+deerestats$stripped_text <- gsub("https.*","", deerestats$stripped_text)
+#strip and clean
+deerestats_clean <- deerestats %>%
+    +     dplyr::select(stripped_text) %>%
+    +     unnest_tokens(word, stripped_text)
+
+View(deerestats_clean)
+
+# plot the top words
+cleaned_tweet_words %>%
+    count(word, sort=TRUE) %>%
+    top_n(60) %>%
+    mutate(word = reorder(word, n)) %>%
+    ggplot(aes(x = word, y = n)) +
+    geom_col() +
+    xlab(NULL) +
+    coord_flip() +
+    labs(x="Count",
+         y="Unique words",
+         title="Count of unique words found in tweets")
+
+#look at the data
+
+#john and deere are going to appear a lot...duh... get rid of them
+cleaned_tweet_words <- subset(cleaned_tweet_words, word != "deere")
+cleaned_tweet_words <- subset(cleaned_tweet_words, word != "john")
+
+#lets look again.
+cleaned_tweet_words %>%
+    count(word, sort=TRUE) %>%
+    top_n(60) %>%
+    mutate(word = reorder(word, n)) %>%
+    ggplot(aes(x = word, y = n)) +
+    geom_col() +
+    xlab(NULL) +
+    coord_flip() +
+    labs(x="Count",
+         y="Unique words",
+         title="Count of unique words found in tweets")
+
+#lets try wayyyy more tweets and retweets
+deerestats <- search_tweets("Deere", n = 36000, include_rts = TRUE, retryonratelimit = TRUE)
+
+#lets make a word network!
+#this will let us see the relations words have to each other in pairs
+
+#widyr library is needed for this
+library(widyr)
+
+#remove punctuations and convert to lowercase, also add id for tweets
+deere_tweets_paired_words <- deerestats %>% dplyr::select(stripped_text) %>% unnest_tokens(paired_words, stripped_text, token = "ngrams", n=2)
+
+#count the number of paired words
+deere_tweets_paired_words %>% count(paired_words, sort = TRUE)
+
+#pair the words together
+deere_tweets_separated_words <- deere_tweets_paired_words %>%
+    separate(paired_words, c("word1", "word2"), sep = " ")
+#filter by the words
+deere_tweets_filtered <- deere_tweets_separated_words %>%
+    filter(!word1 %in% stop_words$word) %>%
+    filter(!word2 %in% stop_words$word)
+
+#new bigrams
+deere_words_counts <- deere_tweets_filtered %>% count(word1, word2, sort = TRUE)
+
+#plot graph
+deere_words_counts %>%
+    filter(n >= 24) %>%
+    graph_from_data_frame() %>%
+    ggraph(layout = "fr") +
+    geom_edge_link(aes(edge_alpha = n, edge_width = n)) +
+    geom_node_point(color = "green", size = 2) +
+    geom_node_text(aes(label = name), vjust = 1.8, size=2) +
+    labs(title= "Word Network: Tweets having the word deere",
+         subtitle="Text mining twitter data ",
+         x="", y="")
