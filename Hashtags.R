@@ -14,8 +14,8 @@ rm(list = ls())   #Clear Environment
 #################################################################################################
 # This code reads the older dataset                                                             #
 #################################################################################################
-tweet <- read.csv("deerestats.csv", stringsAsFactors = FALSE)
 
+tweet <- read.csv("deerestats.csv", stringsAsFactors = FALSE)
 
 tweet <- subset(tweet,tweet$hashtags != "NA")
 
@@ -33,7 +33,7 @@ tweet %>%
       geom_col() +
       xlab(NULL) +
       coord_flip() +
-      labs(x="Unique Hashtags",y="Count",title="Count of Hashtags Found in Tweets")
+      labs(x="Unique Hashtags",y="Count",title="Count of Hashtags Found in Tweets 9/12/17-9/22/17")
 
 ggsave(filename = "UniqueHashtagsOld.png", plot = last_plot(), width = 6, height = 4, dpi = 600)
 
@@ -42,7 +42,6 @@ ggsave(filename = "UniqueHashtagsOld.png", plot = last_plot(), width = 6, height
 #################################################################################################
 
 tweet1 <- read.csv("deerestatsNew.csv", stringsAsFactors = FALSE)
-
 
 tweet1 <- subset(tweet1,tweet1$hashtags != "NA")
 
@@ -60,15 +59,15 @@ tweet1 %>%
   geom_col() +
   xlab(NULL) +
   coord_flip() +
-  labs(x="Unique Hashtags",y="Count",title="Count of Hashtags Found in Tweets")
+  labs(x="Unique Hashtags",y="Count",title="Count of Hashtags Found in Tweets 10/15/17-10/24/17")
 
 ggsave(filename = "UniqueHashtagsNew.png", plot = last_plot(), width = 6, height = 4, dpi = 600)
 
 #################################################################################################
 # This code reads both dataset together                                                         #
 #################################################################################################
-tweet2 <- read.csv("deerestatM.csv", stringsAsFactors = FALSE)
 
+tweet2 <- read.csv("deerestatM.csv", stringsAsFactors = FALSE)
 
 tweet2 <- subset(tweet2,tweet2$hashtags != "NA")
 
@@ -80,15 +79,26 @@ tweet2 <- data.frame(unlist(tweet2),stringsAsFactors=FALSE)
 
 tweet2 %>%
   count(unlist.tweet2., sort=TRUE) %>%
-  top_n(30) %>%
+  top_n(40) %>%
   mutate(unlist.tweet2. = reorder(unlist.tweet2., n)) %>%
   ggplot(aes(x = unlist.tweet2., y = n)) +
   geom_col() +
   xlab(NULL) +
   coord_flip() +
-  labs(x="Unique Hashtags",y="Count",title="Count of Hashtags Found in Tweets")
+  labs(x="Unique Hashtags",y="Count",title="Count of Hashtags Found in Tweets 9/12/17-10/24/17")
 
 ggsave(filename = "UniqueHashtagsCombined.png", plot = last_plot(), width = 6, height = 4, dpi = 600)
 
 #################################################################################################
 #################################################################################################
+#x <- tweet %>%
+#  count(unlist.tweet., sort=TRUE) %>%
+#  top_n(30) %>%
+#  mutate(unlist.tweet. = reorder(unlist.tweet., n))
+#unlist.tweet. <- as.character(x$unlist.tweet.)
+#n <- as.character(x$n)
+#
+#p1 <- qplot(aes(x=n, y=unlist.tweet.),data = x, geom = "bar") + coord_flip()
+
+#p1 <- qplot(aes(x =n, y=unlist.tweet.,n,data = x, geom = "bar") + coord_flip()            
+
