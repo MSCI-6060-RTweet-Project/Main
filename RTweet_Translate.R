@@ -1,5 +1,4 @@
 library("translateR")
-library("ggplot2")
 
 df_source_lang <- read.csv("deerestatM.csv", stringsAsFactors = FALSE)
 df_source_lang$translatedContent <- NA
