@@ -262,11 +262,14 @@ deere_words_counts %>%
 #meant to remove "bots" or users who have chosen Deere in screen_name
 #description - removes screen_name and replies to that screen_name
 
-# botremove <- function(bot, dataframe){
-#     dataframe <- subset(deerestatM, deerestatM$screen_name != bot)
-#     dataframe <- subset(deerestatM, deerestatM$in_reply_to_status_screen_name != bot)
+# botremove <- function(bot){
+#    deerestatM <- subset(deerestatM, deerestatM$screen_name != bot)
+#    deerestatM <- subset(deerestatM, deerestatM$in_reply_to_status_screen_name != bot)
+#    deerestats <- subset(deerestats, deerestats$screen_name != bot)
+#    deerestats <- subset(deerestats, deerestats$in_reply_to_status_screen_name != bot)
+#    deerestatsNew <- subset(deerestatsNew, deerestatsNew$screen_name != bot)
+#    deerestatsNew <- subset(deerestatsNew, deerestatsNew$in_reply_to_status_screen_name != bot)    
 # }
-# 
 # botremove(bot = "Deere_w13", dataframe = "deerestatsM1")
 
 #################################################################################################
