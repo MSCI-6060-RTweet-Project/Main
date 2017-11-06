@@ -34,6 +34,8 @@ library(translateR)
 #################################################################################################
 rm(list = ls())
 #################################################################################################
+# this contains information needed for rtweet and the twitter API
+# used global variables and loaded the token from a file so this didn't need run every time
 ## whatever name you assigned to your created app
 # appname <- "rtweet_deere"
 # 
@@ -49,7 +51,8 @@ rm(list = ls())
 #     consumer_key = key,
 #     consumer_secret = secret,
 #     cache = TRUE)
-
+#################################################################################################
+# this contains information used by twittR package - used during troubleshooting rtweet
 #################################################################################################
 #consumerKey <- "PYZkll7T1peMIxh0TbPRDLHrf"
 #consumerSecret <- "ugKrLGVcsmxBAxaQKwOBtvIueOF166sZpRrJnkSf1v2WdxdWy5"
@@ -189,6 +192,7 @@ deerestats_cleanNew <- subset(deerestats_cleanNew, word != "deere")
 deerestats_cleanNew <- subset(deerestats_cleanNew, word != "john")
 
 #make stop_words
+#stop words is a data set of common english words - the, a, an, and - and so on
 data("stop_words")
 cleaned_tweet_wordsNew <- deerestats_cleanNew %>%
     anti_join(stop_words)
@@ -230,12 +234,6 @@ deere_tweets_paired_words %>% count(paired_words, sort = TRUE)
 #pair the words together
 deere_tweets_separated_words <- deere_tweets_paired_words %>%
     separate(paired_words, c("word1", "word2"), sep = " ")
-#****can't get this part working, something to do with it being atomic I believe
-#replace John with Deere as they will probably almost always be pairs
-#levels(deere_tweets_separated_words$word1)[levels(deere_tweets_separated_words$word1) == "john"] <- "deere"
-#wh <- levels(deere_tweets_separated_words$word1) == "john"
-#levels(deere_tweets_separated_words$word1)[wh] <- "deere"
-#*******
 
 #filter by the words
 deere_tweets_filtered <- deere_tweets_separated_words %>%
