@@ -5,7 +5,7 @@
 #Fall 2017
 #Sam Burer
 #
-#Group Project
+#Group Project - John Deere Tweet Analysis
 #Group Members: Lee Goodlove, Michael Coyle, Matt Knabel, Austin Cappaert & Reed Harris
 #
 #This script contains all the code that we used to get our results for the group project.
@@ -14,23 +14,23 @@
 #################################################################################################
 # Load the necessary libraries. Some we have libraries you might have to install.
 #################################################################################################
-library(ggraph)
-library(igraph)
-library(tidytext)
-library(ggplot2)
-library(dplyr)
-library(tidyr)
-library(rtweet)
-library(openssl)
-library(httr)
-library(widyr)
-library(scales)
-library(reshape2)
-library(lubridate)
-library(magrittr)  # Package needed for %>% to work correctly.
-library(stringi)   # Package needed for stri_detect_regex function.
-library(stringr)   # Package needed for functions str_detect and str_replace_all.  This package is built on top of package stringi.
-library(translateR)
+library(ggraph) # Package required for creating word network
+library(igraph) # Package required for creating word network
+library(tidytext) # Package required for formatting tweets
+library(ggplot2) # Package required for various plots
+library(dplyr) # Package required for manipulating code and word counts
+library(tidyr) # Package required for cleaning data
+library(rtweet) # Package required for pulling tweets
+library(openssl) # Package required for pulling tweets (updated library)
+library(httr) # Package required for pulling tweets (updated library)
+library(widyr) # Package required for manipulating data for word network (in association with tidytext)
+library(scales) # Package required for customizing plots/graphs
+library(reshape2) # Package required for creating word network (cast data)
+library(lubridate) # Package required for manipulating dates/times
+library(magrittr)  # Package required for %>% to work correctly.
+library(stringi)   # Package required for stri_detect_regex function.
+library(stringr)   # Package required for functions str_detect and str_replace_all.  This package is built on top of package stringi.
+library(translateR) # Package required for language translations
 #################################################################################################
 rm(list = ls())
 #################################################################################################
@@ -721,4 +721,3 @@ tweets.per.day <- function(start_date = mindate, end_date = maxdate){
     # Return the plot object
     return = mcp
 }
-
